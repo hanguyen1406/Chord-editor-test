@@ -1,5 +1,7 @@
-var noc = 0;
-
+var noc = 0,
+    note = "C",
+    minor = "major";
+var sort = true;
 function showmenu(i) {
     $(`#selector #drop-${i}-content`).show();
 }
@@ -31,7 +33,7 @@ function convToDec(char) {
 function convert(str) {
     var res = str.toUpperCase().split("");
     res.forEach((s, i) => {
-        if (s != "X" && s != "O") res[i] = convToDec(s);
+        if (s != "X" && s != "0") res[i] = convToDec(s);
     });
 
     return res.join("-");
@@ -67,26 +69,26 @@ function getData(note, tone) {
                 console.log(chordName);
                 $("#list-chord").append(`
                 <div id="chord-${i}" class="row mt-3">
-                <b>${i + 1}.</b>
+                <hr><b>${i + 1}.</b>
                 <div onchange="onChangeData(${i})" class="col-4 offset-2">
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">Frets</span>
-                        <input type="text" class="form-control fret" value="${frets}">
+                        <input id="fret-${i}" type="text" class="form-control" value="${frets}">
                     </div>
                     <div class="input-group mt-1 flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">Finger</span>
-                        <input type="text" class="form-control finger" value="${fingers}">
+                        <input  id="finger-${i}" type="text" class="form-control" value="${fingers}">
                     </div>
                     <div class="input-group mt-1">
                         <div class="input-group-text">
                             Capo:
                             <input class="form-check-input mt-0" ${checked} type="checkbox" value="">
                         </div>
-                        <input type="number" value="${capo}" class="form-control">
+                        <input id="capo-${i}" type="number" value="${capo}" class="form-control">
                     </div>
                 </div>
                 <div class="col-3">
-                    <img id="chord" src='https://chordgenerator.net/${chordName}.png?p=${frets}&s=3'/>
+                    <img id="chord-img" src='https://chordgenerator.net/${chordName}.png?p=${frets}&s=3'/>
                 </div>
                 <div id="control" class="col-1">
                     <a onclick="swUp(${i})"><img src="./img/up-arrow.png"/></a>
@@ -107,17 +109,22 @@ function getData(note, tone) {
 }
 
 function onChangeData(i) {
-    var fret = $(`#chord-${i} #fret`).val();
-    var src = $(`#chord-${i} #chord`).attr("src").split("p=");
+    var fret = $(`#chord-${i} #fret-${i}`).val();
+    var src = $(`#chord-${i} #chord-img`).attr("src").split("p=");
     src[1] = "p=" + fret + "&s=3";
     console.log(src.join(""));
-    $(`#chord-${i} #chord`).attr("src", src.join(""));
+    $(`#chord-${i} #chord-img`).attr("src", src.join(""));
 }
 function solve(str, i, j) {
     res = "";
     str.split('"').forEach((e) => {
         // console.log(e);
-        res += e.replace(`(${i})`, `(${j})`) + '"';
+        res +=
+            e
+                .replace(`(${i})`, `(${j})`)
+                .replace(`t-${i}`, `t-${j}`)
+                .replace(`r-${i}`, `r-${j}`)
+                .replace(`o-${i}`, `o-${j}`) + '"';
     });
     return res.slice(0, -1);
 }
@@ -129,6 +136,7 @@ function swUp(i) {
         $(`#chord-${i - 1}`).html(solve($(`#chord-${i}`).html(), i, i - 1));
         $(`#chord-${i}`).html(chord0);
     }
+    sort = false;
 }
 function swDown(i) {
     if (i < noc - 1) {
@@ -137,17 +145,100 @@ function swDown(i) {
         $(`#chord-${i + 1}`).html(solve($(`#chord-${i}`).html(), i, i + 1));
         $(`#chord-${i}`).html(chord0);
     }
+    sort = false;
 }
 function deleteChord(i) {
     // console.log(i);
-    alert(`Chắn chắn xóa version: ${i + 1}`);
-    $(`#chord-${i}`).remove();
+    if (i < noc - 1) alert("Chỉ xóa được hợp âm cuối!");
+    else if (sort) {
+        var result = window.confirm(`Chắn chắn xóa version: ${i + 1}`);
+        if (result === true) {
+            $(`#chord-${i}`).remove();
+        }
+        noc--;
+    } else {
+        alert("Cần reload lại trang để xóa!");
+        $("#save").click();
+    }
 }
 function changeNewData() {
-    getData($("#dropbtn-note").text().replace(/\s+/g, ' ').trim(), $("#dropbtn-minor").text().replace(/\s+/g, ' ').trim());
+    note = $("#dropbtn-note").text().replace(/\s+/g, " ").trim();
+    minor = $("#dropbtn-minor").text().replace(/\s+/g, " ").trim();
+    getData(note, minor);
 }
 changeNewData();
 
+function convToHex(decimal) {
+    if (decimal >= 0 && decimal <= 9) {
+        return decimal.toString();
+    } else {
+        return String.fromCharCode(decimal + 55);
+    }
+}
+// for (var i = 0; i < 25; i++) {
+//     console.log(convToHex(i));
+// }
 function save() {
-    console.log($('.fret'))
+    // console.log($('.fret')[0])
+    var res = {
+        key: note,
+        suffix: minor,
+        positions: [],
+    };
+    for (let i = 0; i < noc; i++) {
+        var p = { frets: "", fingers: "" };
+        $("#fret-" + i)
+            .val()
+            .split("-")
+            .forEach((i) => {
+                if (i != "X") p.frets += convToHex(Number(i)).toLowerCase();
+                else p.frets += "x";
+            });
+        $("#finger-" + i)
+            .val()
+            .split("-")
+            .forEach((i) => {
+                p.fingers += convToHex(Number(i));
+            });
+        var capo = $("#capo-" + i).val();
+        if (capo) {
+            p.capo = "true";
+            p.barres = capo;
+        }
+        res.positions.push(p);
+    }
+    // console.log(res);
+    //save to sever
+    // URL of the PHP script
+    var url = "saveChord.php";
+
+    // Fetch request configuration
+    var requestOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(res),
+    };
+    // Send the data to the server using fetch
+    fetch(url, requestOptions)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.text(); // Parse the response body as JSON
+        })
+        .then((data) => {
+            if (data == "1") {
+                alert("Lưu thành công, reload lại trang");
+                location.reload(true);
+            }
+        })
+        .catch((error) => {
+            console.error(
+                "There was a problem with the fetch operation:",
+                error
+            );
+            // Handle errors here
+        });
 }
