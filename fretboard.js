@@ -1,75 +1,71 @@
-
-const COMMON_NOTES = {
-    e: ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E'],
-    a: ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', "A"],
-    d: ['D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D'],
-    g: ['G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G'],
-    b: ['B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+var notes = {
+    e: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#"],
+    a: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
+    d: ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#"],
+    g: ["G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"],
+    b: ["B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#"],
 };
 
-const ACTIVE_NOTE_FEATURE = () => {
-    // Rerender Base body
-    // $("body .content").html(COMMON_CONTENT_HTML_BASE);
-    // Render Notes
-    for (let i = 0; i < COMMON_NOTES.e.length; i++) {
+
+function resetNote() {
+    $(".notes .mask ul").text("");
+    console.log($(".mask.low-e ul"));
+    for (let i = 0; i < notes.e.length; i++) {
         $(".mask.low-e ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                COMMON_NOTES.e[i] +
-                ">" +
-                COMMON_NOTES.e[i] +
+                notes.e[i] +
+                " style='opacity: 0;'>" +
+                notes.e[i] +
                 "</li>"
         );
         $(".mask.a ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                COMMON_NOTES.a[i] +
-                ">" +
-                COMMON_NOTES.a[i] +
+                notes.a[i] +
+                " style='opacity: 0;'>" +
+                notes.a[i] +
                 "</li>"
         );
         $(".mask.d ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                COMMON_NOTES.d[i] +
-                ">" +
-                COMMON_NOTES.d[i] +
+                notes.d[i] +
+                " style='opacity: 0;'>" +
+                notes.d[i] +
                 "</li>"
         );
         $(".mask.g ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                COMMON_NOTES.g[i] +
-                ">" +
-                COMMON_NOTES.g[i] +
+                notes.g[i] +
+                " style='opacity: 0;'>" +
+                notes.g[i] +
                 "</li>"
         );
         $(".mask.b ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                COMMON_NOTES.b[i] +
-                ">" +
-                COMMON_NOTES.b[i] +
+                notes.b[i] +
+                " style='opacity: 0;'>" +
+                notes.b[i] +
                 "</li>"
         );
         $(".mask.high-e ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                COMMON_NOTES.e[i] +
-                ">" +
-                COMMON_NOTES.e[i] +
+                notes.e[i] +
+                " style='opacity: 0;'>" +
+                notes.e[i] +
                 "</li>"
         );
     }
-   
+}
 
-
-};
-
-ACTIVE_NOTE_FEATURE();
+resetNote();

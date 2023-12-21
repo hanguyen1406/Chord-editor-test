@@ -10,6 +10,7 @@ function chordsChooser(i) {
     if (i == "major" || i == "minor") $("#dropbtn-minor").text(i);
     else $("#dropbtn-note").text(i);
     changeNewData();
+    ACTIVE_NOTE_FEATURE();
 }
 $(function () {
     var $win = $(window),
@@ -56,27 +57,27 @@ function getData(note, tone) {
             $("#nov").text(
                 `Hiện có tất cả ${noc} version hợp âm ${note} ${tone}`
             );
-            data["positions"].forEach((e, i) => {
-                $("#list-chord").append(`
+            data["positions"].forEach(async (e, i) => {
+                await $("#list-chord").append(`
                     <div class="row m-1 p-2 chord-v">
                         <div class="col-1">
-                            <b class="num">${i+1}</b>
+                            <b class="num">${i + 1}</b>
                         </div>
                         <div class="col-3">
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="addon-wrapping"><b>Frets:</b></span>
-                                <input type="text" class="form-control">
+                                <input type="text" value="${convert(e.frets)}" class="form-control">
                             </div>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="addon-wrapping"><b>Fingers:</b></span>
-                                <input type="text" class="form-control">
+                                <input type="text" value="${convert(e.fingers)}" class="form-control">
                             </div>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="addon-wrapping"><b>Capo:</b></span>
-                                <input type="text" class="form-control">
+                                <input type="number" class="form-control">
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <div class="fretboard">
                                 <div class="guitar-neck">
                                     <div class="fret first"></div>
@@ -103,25 +104,14 @@ function getData(note, tone) {
                                         <li class="high-e">E</li>
                                     </ul>
                                     <div class="notes">
-                                        <div class="mask low-e">
-                                            <ul></ul>
-                                        </div>
-                                        <div class="mask a">
-                                            <ul></ul>
-                                        </div>
-                                        <div class="mask d">
-                                            <ul></ul>
-                                        </div>
-                                        <div class="mask g">
-                                            <ul></ul>
-                                        </div>
-                                        <div class="mask b">
-                                            <ul></ul>
-                                        </div>
-                                        <div class="mask high-e">
-                                            <ul></ul>
-                                        </div>
+                                        <div class="mask low-e"><ul><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li></ul></div>
+                                        <div class="mask a"><ul><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li></ul></div>
+                                        <div class="mask d"><ul><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li></ul></div>
+                                        <div class="mask g"><ul><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li></ul></div>
+                                        <div class="mask b"><ul><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li></ul></div>
+                                        <div class="mask high-e"><ul><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li></ul></div>
                                     </div>
+                                    <ul class="compartment-number"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul>
                                 </div>
                             </div>
                         </div>
@@ -151,24 +141,24 @@ function getData(note, tone) {
                                         <li class="a">A</li>
                                         <li class="high-e">E</li>
                                     </ul>
-                                    <div class="notes">
-                                        <div class="mask low-e">
-                                            <ul></ul>
+                                    <div class="red-dots">
+                                        <div class="red-dot low-e">
+                                            <ul><li dot-number="0" style="opacity: 1;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
-                                        <div class="mask a">
-                                            <ul></ul>
+                                        <div class="red-dot a">
+                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 1;">3</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
-                                        <div class="mask d">
-                                            <ul></ul>
+                                        <div class="red-dot d">
+                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 1;">2</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
-                                        <div class="mask g">
-                                            <ul></ul>
+                                        <div class="red-dot g">
+                                            <ul><li dot-number="0" style="opacity: 1;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
-                                        <div class="mask b">
-                                            <ul></ul>
+                                        <div class="red-dot b">
+                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 1;">1</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
-                                        <div class="mask high-e">
-                                            <ul></ul>
+                                        <div class="red-dot high-e">
+                                            <ul><li dot-number="0" style="opacity: 1;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +168,7 @@ function getData(note, tone) {
                     
                     </div>
                 `);
-                console.log(e);
+                console.log(convert(e.frets));
             });
         })
         .catch((error) => {
