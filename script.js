@@ -3,6 +3,7 @@ var noc = 0,
     minor = "major";
 var sort = true;
 function showmenu(i) {
+    $(document).click();
     $(`#selector #drop-${i}-content`).show();
 }
 function chordsChooser(i) {
@@ -56,48 +57,128 @@ function getData(note, tone) {
                 `Hiện có tất cả ${noc} version hợp âm ${note} ${tone}`
             );
             data["positions"].forEach((e, i) => {
-                var checked = "",
-                    capo = e["capo"];
-                if (capo) {
-                    checked = 'checked = ""';
-                    capo = e["barres"];
-                }
-                var frets = convert(e["frets"]),
-                    fingers = convert(e["fingers"]);
-                var chordName = tone == "minor" ? note + "minor" : note;
-                chordName = chordName.replace("#", "%23");
-                console.log(chordName);
                 $("#list-chord").append(`
-                <div id="chord-${i}" class="row mt-3">
-                <hr><b>${i + 1}.</b>
-                <div onchange="onChangeData(${i})" class="col-4 offset-2">
-                    <div class="input-group flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">Frets</span>
-                        <input id="fret-${i}" type="text" class="form-control" value="${frets}">
-                    </div>
-                    <div class="input-group mt-1 flex-nowrap">
-                        <span class="input-group-text" id="addon-wrapping">Finger</span>
-                        <input  id="finger-${i}" type="text" class="form-control" value="${fingers}">
-                    </div>
-                    <div class="input-group mt-1">
-                        <div class="input-group-text">
-                            Capo:
-                            <input class="form-check-input mt-0" ${checked} type="checkbox" value="">
+                    <div class="row m-1 p-2 chord-v">
+                        <div class="col-1">
+                            <b class="num">${i+1}</b>
                         </div>
-                        <input id="capo-${i}" type="number" value="${capo}" class="form-control">
+                        <div class="col-3">
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping"><b>Frets:</b></span>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping"><b>Fingers:</b></span>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="input-group flex-nowrap">
+                                <span class="input-group-text" id="addon-wrapping"><b>Capo:</b></span>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="fretboard">
+                                <div class="guitar-neck">
+                                    <div class="fret first"></div>
+                                    <div class="fret"></div>
+                                    <div class="fret"></div>
+                                    <div class="fret"></div>
+                                    <div class="fret"></div>
+                                    
+                                    <ul class="strings">
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    </ul>
+                
+                                    <ul class="open-notes">
+                                        <li class="low-e">E</li>
+                                        <li class="b">B</li>
+                                        <li class="g">G</li>
+                                        <li class="d">D</li>
+                                        <li class="a">A</li>
+                                        <li class="high-e">E</li>
+                                    </ul>
+                                    <div class="notes">
+                                        <div class="mask low-e">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask a">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask d">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask g">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask b">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask high-e">
+                                            <ul></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                        <div class="fretboard">
+                                <div class="guitar-neck">
+                                    <div class="fret first"></div>
+                                    <div class="fret"></div>
+                                    <div class="fret"></div>
+                                    <div class="fret"></div>
+                                    <div class="fret"></div>
+                                    
+                                    <ul class="strings">
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    </ul>
+                
+                                    <ul class="open-notes">
+                                        <li class="low-e">E</li>
+                                        <li class="b">B</li>
+                                        <li class="g">G</li>
+                                        <li class="d">D</li>
+                                        <li class="a">A</li>
+                                        <li class="high-e">E</li>
+                                    </ul>
+                                    <div class="notes">
+                                        <div class="mask low-e">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask a">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask d">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask g">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask b">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask high-e">
+                                            <ul></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                        
+                    
                     </div>
-                </div>
-                <div class="col-3">
-                    <img id="chord-img" src='https://chordgenerator.net/${chordName}.png?p=${frets}&s=3'/>
-                </div>
-                <div id="control" class="col-1">
-                    <a onclick="swUp(${i})"><img src="./img/up-arrow.png"/></a>
-                    <a onclick="swDown(${i})"><img src="./img/down-arrow.png"/></a>
-                    <a onclick="deleteChord(${i})"><img src="./img/delete.png"/></a>
-                </div>
-            </div>
-            `);
-                // console.log(e)
+                `);
+                console.log(e);
             });
         })
         .catch((error) => {

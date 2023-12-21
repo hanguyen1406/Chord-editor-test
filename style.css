@@ -1,3 +1,6 @@
+body {
+    background-color: #e4e2c3;
+}
 .dropbtn {
     background-color: #818181;
     color: white;
@@ -5,7 +8,40 @@
     font-size: 16px;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+#list-chord{
+    padding-left: 5%;
+    padding-right: 5%;
+}
+#inp {
+    height: 44px;
+    margin: 3px;
+}
+.lable {
+    background-color: #b4b4b4;
+    width: 80px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+
+}
+.num{
+    color: black;
+    text-decoration: none;
+    width: fit-content;
+    height: fit-content;
+    /* margin-top: 15px; */
+    display: block;
+}
+.chord-v {
+    /* border: 1px solid gray; */
+    background-color: #e2e7e2;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+
 }
 #control img {
   width: 40px;
@@ -35,9 +71,12 @@ a {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    min-width: 100px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    border-radius: 10px;
+    height: 300px;
+    overflow-y: scroll
 }
 
 .dropdown-content a {

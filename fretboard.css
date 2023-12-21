@@ -1,0 +1,373 @@
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/sourcesanspro/v22/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7g.ttf) format('truetype');
+}
+* {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+body {
+  background: #eee;
+  font-family: 'Source Sans Pro', sans-serif;
+  letter-spacing: 0.05em;
+  
+}
+h1 {
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 40px;
+}
+.content{
+  justify-content: center;
+  display: grid;
+}
+.fretboard{
+  /* margin-left: 50px; */
+  width: 260px;
+  height: 370px;
+  overflow-y:hidden;
+  overflow-x:hidden;
+  padding-right: 15px;
+}
+.tabs-control {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.tabs-control li[tab-name] {
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 500;
+  padding: 0 25px;
+}
+
+.tabs-control li[tab-name]:not(:last-child) {
+  border-right: 2px solid black;
+}
+.tabs-control li[tab-name]:first-child {
+  padding-left: 0;
+}
+.tabs-control li[tab-name]:last-child {
+  padding-right: 0;
+}
+
+.tabs-control li[tab-name].active {
+  font-weight: 700;
+  color: #17a2b8;
+  text-decoration: underline;
+}
+
+
+.active[button-click] {
+  transition: all 0.3s ease-in-out;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.guitar-neck {
+  position: relative;
+  /* left: 35%; */
+  width: 260px;
+  height: 1010px;
+  background: #755628;
+  box-shadow: inset -1px 0px 11px 0px rgba(0, 0, 0, 0.75);
+}
+.guitar-neck .open-notes {
+  position: absolute;
+  top: 5px; 
+  left: 4px;
+  z-index: 4;
+  
+}
+
+.guitar-neck .open-notes li {
+  font-size: 18px;
+  color: #fff;
+}
+
+.guitar-neck .open-notes li:nth-child(1) {
+  position: absolute;
+  left: 5px;
+    
+}
+
+.guitar-neck .open-notes li:nth-child(5) {
+  position: absolute;
+  left: 50px;
+  
+}
+.guitar-neck .open-notes li:nth-child(4) {
+  position: absolute;
+  left: 100px;
+  
+}
+.guitar-neck .open-notes li:nth-child(3) {
+  position: absolute;
+  left: 145px;
+  
+}
+.guitar-neck .open-notes li:nth-child(2) {
+  position: absolute;
+  left: 188px;
+  
+}
+.guitar-neck .open-notes li:nth-child(6) {
+  position: absolute;
+  left: 230px;
+}
+
+
+.guitar-neck .open-notes li.active {
+  color: #fa990f;
+}
+.guitar-neck .fret {
+  height: 3px;
+  background: #d7d6d6;
+  border-bottom: 2px solid #686868;
+  margin-top: 75px;
+}
+.guitar-neck .fret.first {
+  margin: 0;
+  position: relative;
+  height: 50px;
+  width: 100%;
+  background: #211f1d;
+  z-index: 4;
+  top: -5px;
+}
+.guitar-neck .dots {
+  position: absolute;
+  width: 20px;
+  height: 100%;
+  top: 240px;
+  left: 48%;
+  overflow: hidden;
+}
+.guitar-neck .dots li {
+  float: left;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #383530;
+  margin-bottom: 140px;
+}
+.guitar-neck .strings {
+  position: absolute;
+  left: 14px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+.guitar-neck .strings li {
+  width: 6px;
+  display: inline-block;
+  height: 100%;
+  background: #c8bb93;
+  margin-right: 38px;
+  border-top: 2px solid #958963;
+  box-sizing: border-box;
+}
+.guitar-neck .strings li:nth-child(2) {
+  width: 5px;
+}
+.guitar-neck .strings li:nth-child(3) {
+  width: 4px;
+}
+.guitar-neck .strings li:nth-child(4) {
+  width: 3px;
+}
+.guitar-neck .strings li:nth-child(5) {
+  width: 2px;
+}
+.guitar-neck .strings li:nth-child(6) {
+  width: 1px;
+  margin-right: 0;
+}
+.guitar-neck .notes {
+  position: absolute;
+  top: -5px;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  left: 3px;
+  /* z-index: 3; */
+}
+.guitar-neck .notes .mask {
+  position: absolute;
+  width: 30px;
+  height: fit-content;
+}
+.guitar-neck .notes .mask ul {
+  position: relative;
+  float: left;
+}
+.guitar-neck .notes .mask ul li {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 50px;
+  background: #fa990f;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.75);
+}
+.guitar-neck .notes .mask.a {
+  left: 47px;
+}
+.guitar-neck .notes .mask.d {
+  left: 93px;
+}
+.guitar-neck .notes .mask.g {
+  left: 137px;
+}
+.guitar-neck .notes .mask.b {
+  left: 181px;
+}
+.guitar-neck .notes .mask.high-e {
+  left: 224px;
+}
+.guitar-neck .compartment-number {
+  position: absolute;
+  top: 65px;
+  left: -20px;
+}
+
+.guitar-neck .compartment-number li {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 45px;
+}
+
+.guitar-neck .compartment-number li:nth-child(1) {
+  /* margin-left: 10%; */
+}
+
+/* Controls */
+.controls {
+  position: relative;
+  margin-top: 50px;
+  margin-bottom: 40px;
+  left: 50%;
+  margin-left: -380px;
+  width: 760px;
+  text-align: center;
+  color: #333;
+}
+.controls a {
+  text-decoration: none;
+  background: #333;
+  color: #fff;
+  padding: 5px 10px;
+  margin-right: 40px;
+}
+.controls a.down {
+  margin-right: 0;
+}
+.controls h2 {
+  text-transform: uppercase;
+  margin: 40px 0;
+}
+.controls ul li {
+  float: left;
+  width: 40px;
+  height: 20px;
+  background: #333;
+  color: #fff;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.controls ul li:last-child {
+  margin-right: 0;
+}
+.controls ul {
+  height: 20px;
+}
+
+.controls .control-chord {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controls .control-chord .control-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.controls .control-chord .control-header .checkbox-show-note {
+  display: flex;
+  gap: 5px;
+}
+
+.controls .control-chord .control-header .checkbox-show-note input[type="checkbox"] {
+  width: 40px;
+}
+
+.controls .control-chord ul:last-child {
+  margin-top: 20px;
+}
+
+/* Control for Chord */
+.controls:has(.control-chord) {
+  margin-top: 25px;
+}
+
+/* Red dot */
+.guitar-neck .red-dots {
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  z-index: 5;
+  left: 3px;
+}
+.guitar-neck .red-dots .red-dot {
+  position: absolute;
+  width: 30px;
+  height: 1000px;
+}
+.guitar-neck .red-dots .red-dot ul {
+  position: relative;
+  float: left;
+}
+.guitar-neck .red-dots .red-dot ul li {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 50px;
+  background: #a10000;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  opacity: 0;
+}
+.guitar-neck .red-dots .red-dot ul li:nth-child(1) {
+  margin-bottom: 12px;
+}
+.guitar-neck .red-dots .red-dot.a {
+  left: 47px;
+}
+.guitar-neck .red-dots .red-dot.d {
+  left: 93px;
+}
+.guitar-neck .red-dots .red-dot.g {
+  left: 137px;
+}
+.guitar-neck .red-dots .red-dot.b {
+  left: 181px;
+}
+.guitar-neck .red-dots .red-dot.high-e {
+  left: 224px;
+}
