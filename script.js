@@ -51,30 +51,43 @@ function getData(note, tone) {
             }
             return response.json();
         })
-        .then((data) => {
+        .then(async (data) => {
             // console.log(data['positions']);
             noc = data["positions"].length;
             $("#nov").text(
                 `Hiện có tất cả ${noc} version hợp âm ${note} ${tone}`
             );
             data["positions"].forEach(async (e, i) => {
+                var capo = e["capo"] ? e["barres"] : "";
+
                 await $("#list-chord").append(`
                     <div class="row m-1 p-2 chord-v">
                         <div class="col-1">
                             <b class="num">${i + 1}</b>
                         </div>
                         <div class="col-3">
-                            <div class="input-group flex-nowrap">
+                            <div style="margin-top: 50px">
+                                <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="addon-wrapping"><b>Frets:</b></span>
-                                <input type="text" value="${convert(e.frets)}" class="form-control">
-                            </div>
-                            <div class="input-group flex-nowrap">
-                                <span class="input-group-text" id="addon-wrapping"><b>Fingers:</b></span>
-                                <input type="text" value="${convert(e.fingers)}" class="form-control">
-                            </div>
-                            <div class="input-group flex-nowrap">
-                                <span class="input-group-text" id="addon-wrapping"><b>Capo:</b></span>
-                                <input type="number" class="form-control">
+                                <input type="text" value="${convert(
+                                    e.frets
+                                )}" class="form-control">
+                                </div>
+                                <div class="input-group flex-nowrap">
+                                    <span class="input-group-text" id="addon-wrapping"><b>Fingers:</b></span>
+                                    <input type="text" value="${convert(
+                                        e.fingers
+                                    )}" class="form-control">
+                                </div>
+                                <div class="input-group flex-nowrap">
+                                    <span class="input-group-text" id="addon-wrapping"><b>Capo:</b></span>
+                                    <input type="number" value="${capo}" class="form-control">
+                                </div>
+                                <div class="d-grid gap-2 mt-2">
+                                    <button class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
+                                    <button class="btn btn-primary" type="button">Move down <img style="width:20px" src="img/down-arrow.png"/></button>
+                                    <button class="btn btn-danger" type="button">Delete <img style="width:20px" src="img/delete.png"/></button>
+                                </div>
                             </div>
                         </div>
                         <div class="col-4">
@@ -103,13 +116,25 @@ function getData(note, tone) {
                                         <li class="a">A</li>
                                         <li class="high-e">E</li>
                                     </ul>
-                                    <div class="notes">
-                                        <div class="mask low-e"><ul><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li></ul></div>
-                                        <div class="mask a"><ul><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li></ul></div>
-                                        <div class="mask d"><ul><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li></ul></div>
-                                        <div class="mask g"><ul><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li></ul></div>
-                                        <div class="mask b"><ul><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li></ul></div>
-                                        <div class="mask high-e"><ul><li note="E">E</li><li note="F">F</li><li note="F#">F#</li><li note="G">G</li><li note="G#">G#</li><li note="A">A</li><li note="A#">A#</li><li note="B">B</li><li note="C">C</li><li note="C#">C#</li><li note="D">D</li><li note="D#">D#</li><li note="E">E</li></ul></div>
+                                    <div id="notes-${i}" class="notes">
+                                        <div class="mask low-e">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask a">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask d">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask g">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask b">
+                                            <ul></ul>
+                                        </div>
+                                        <div class="mask high-e">
+                                            <ul></ul>
+                                        </div>
                                     </div>
                                     <ul class="compartment-number"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul>
                                 </div>
@@ -164,12 +189,15 @@ function getData(note, tone) {
                                 </div>
                             </div>
                         </div>
-                                        
-                    
                     </div>
                 `);
-                console.log(convert(e.frets));
+                // console.log(convert(e.frets));
             });
+            await resetNote();
+            data["positions"].forEach(async (e, i) => {
+                showChord(convert(e.frets), i);
+
+            })
         })
         .catch((error) => {
             console.error(
