@@ -13,6 +13,25 @@ const hideChord = (i) => {
 const hideFinger = (i) => {
     $(`#red-dots-${i} [dot-number]`).animate({ opacity: 0 }, 500);
 };
+const hideBarre = (i) => {
+    $("#barres").animate({ opacity: 0 }, 500);
+};
+const renderBarre = (indexVersion, indexBarre) => {
+    console.log('version:',indexVersion)
+    console.log('barre:',indexBarre)
+    $(`#notes-${indexVersion} #barres`).animate(
+        { top: `${indexBarre * 78.3}px`, opacity: 1 },
+        500
+    );
+};
+const updateChord = (i) => {
+    var fret = $(`#ver-${i} #input-fret`).val(),
+        finger = $(`#ver-${i} #input-finger`).val(),
+        capo = $(`#ver-${i} #input-capo`).val();
+
+    showChord(fret, i, capo);
+    showFinger(fret, finger, i);
+};
 function renderFret() {
     for (let i = 23; i >= 0; i--) {
         // console.log($(".guitar-neck"));
@@ -25,20 +44,22 @@ function renderFret() {
         }
     }
 }
-const showChord = (fret, i) => {
+const showChord = (fret, i, capo) => {
     canClick = false;
     // $("li[dot-number]").animate({ opacity: 0 }, 500);
     // $("[note-number]").animate({ opacity: 0 }, 500);
 
-    // console.log(fret);
+    console.log(fret);
+    var min = 24;
     fret.split("-").forEach((chord, index) => {
-        if (chord != "x") {
+        if (chord != "X") {
             $(
                 `#notes-${i} ${notesClassName[index]} ul li[note-number="${chord}"]`
             ).animate({ opacity: 1 }, 500);
+            min = Math.min(min, parseInt(chord));
         }
     });
-
+    if (capo) renderBarre(i, capo);
     setTimeout(() => {
         canClick = true;
     }, 500);
@@ -56,8 +77,9 @@ function goToFretI(indexVersion, indexBarre) {
             topPos;
 
         topPos = myElement[1].offsetTop;
-        document.querySelectorAll(`#ver-${indexVersion} .fretboard`)[1].scrollTop =
-            topPos;
+        document.querySelectorAll(
+            `#ver-${indexVersion} .fretboard`
+        )[1].scrollTop = topPos;
     }
 }
 
@@ -87,65 +109,79 @@ const showFinger = (fret, finger, i) => {
 };
 function resetNote() {
     // $(".notes ul").text("");
-
-    for (let i = 0; i < notes.e.length; i++) {
+    for (let i = 0; i < notes.e.length*2; i++) {
         $(".mask.low-e ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                notes.e[i] +
+                notes.e[i % 12] +
                 " style='opacity: 0;'>" +
-                notes.e[i] +
+                notes.e[i % 12] +
                 "</li>"
         );
         $(".mask.a ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                notes.a[i] +
+                notes.a[i % 12] +
                 " style='opacity: 0;'>" +
-                notes.a[i] +
+                notes.a[i % 12] +
                 "</li>"
         );
         $(".mask.d ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                notes.d[i] +
+                notes.d[i % 12] +
                 " style='opacity: 0;'>" +
-                notes.d[i] +
+                notes.d[i % 12] +
                 "</li>"
         );
         $(".mask.g ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                notes.g[i] +
+                notes.g[i % 12] +
                 " style='opacity: 0;'>" +
-                notes.g[i] +
+                notes.g[i % 12] +
                 "</li>"
         );
         $(".mask.b ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                notes.b[i] +
+                notes.b[i % 12] +
                 " style='opacity: 0;'>" +
-                notes.b[i] +
+                notes.b[i % 12] +
                 "</li>"
         );
         $(".mask.high-e ul").append(
             "<li note-number=" +
                 i +
                 " note=" +
-                notes.e[i] +
+                notes.e[i % 12] +
                 " style='opacity: 0;'>" +
-                notes.e[i] +
+                notes.e[i % 12] +
                 "</li>"
         );
     }
 }
-
+function resetFinger() {
+    for (let i = 0; i < notes.e.length*2; i++) {
+        $(".red-dots .low-e ul").append(
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+        $(".red-dots .a ul").append(
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+        $(".red-dots .d ul").append(
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+        $(".red-dots .g ul").append(
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+        $(".red-dots .b ul").append(
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+        $(".red-dots .high-e ul").append(
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+    }
+}
 var $goTop = $(".go-top");
 $goTop.hide();
 
@@ -165,4 +201,3 @@ $goTop.on("click", function () {
         150
     );
 });
-
