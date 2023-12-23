@@ -61,7 +61,7 @@ function getData(note, tone) {
                 var capo = e["capo"] ? e["barres"] : "";
 
                 await $("#list-chord").append(`
-                    <div class="row m-1 p-2 chord-v">
+                    <div id="ver-${i}" class="row m-1 p-2 chord-v">
                         <div class="col-1">
                             <b class="num">${i + 1}</b>
                         </div>
@@ -69,19 +69,19 @@ function getData(note, tone) {
                             <div style="margin-top: 50px">
                                 <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="addon-wrapping"><b>Frets:</b></span>
-                                <input type="text" value="${convert(
+                                <input id="input-fret" type="text" value="${convert(
                                     e.frets
                                 )}" class="form-control">
                                 </div>
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping"><b>Fingers:</b></span>
-                                    <input type="text" value="${convert(
+                                    <input id="input-finger" type="text" value="${convert(
                                         e.fingers
                                     )}" class="form-control">
                                 </div>
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping"><b>Capo:</b></span>
-                                    <input type="number" value="${capo}" class="form-control">
+                                    <input id="input-capo" type="number" value="${capo}" class="form-control">
                                 </div>
                                 <div class="d-grid gap-2 mt-2">
                                     <button class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
@@ -91,14 +91,8 @@ function getData(note, tone) {
                             </div>
                         </div>
                         <div class="col-4">
-                            <div class="fretboard">
+                            <div style="padding-left:50px; width: 307px" class="fretboard">
                                 <div class="guitar-neck">
-                                    <div class="fret first"></div>
-                                    <div class="fret"></div>
-                                    <div class="fret"></div>
-                                    <div class="fret"></div>
-                                    <div class="fret"></div>
-                                    
                                     <ul class="strings">
                                         <li></li>
                                         <li></li>
@@ -136,19 +130,13 @@ function getData(note, tone) {
                                             <ul></ul>
                                         </div>
                                     </div>
-                                    <ul class="compartment-number"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul>
+                                    <ul class="compartment-number"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li></ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-3">
                         <div class="fretboard">
                                 <div class="guitar-neck">
-                                    <div class="fret first"></div>
-                                    <div class="fret"></div>
-                                    <div class="fret"></div>
-                                    <div class="fret"></div>
-                                    <div class="fret"></div>
-                                    
                                     <ul class="strings">
                                         <li></li>
                                         <li></li>
@@ -166,24 +154,24 @@ function getData(note, tone) {
                                         <li class="a">A</li>
                                         <li class="high-e">E</li>
                                     </ul>
-                                    <div class="red-dots">
+                                    <div id="red-dots-${i}" class="red-dots">
                                         <div class="red-dot low-e">
-                                            <ul><li dot-number="0" style="opacity: 1;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
+                                            <ul><li dot-number="0" style="opacity: 0;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
                                         <div class="red-dot a">
-                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 1;">3</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
+                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">3</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
                                         <div class="red-dot d">
-                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 1;">2</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
+                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">2</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
                                         <div class="red-dot g">
-                                            <ul><li dot-number="0" style="opacity: 1;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
+                                            <ul><li dot-number="0" style="opacity: 0;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
                                         <div class="red-dot b">
-                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 1;">1</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
+                                            <ul><li dot-number="0" style="opacity: 0;">.</li><li dot-number="1" style="opacity: 0;">1</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
                                         <div class="red-dot high-e">
-                                            <ul><li dot-number="0" style="opacity: 1;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
+                                            <ul><li dot-number="0" style="opacity: 0;">0</li><li dot-number="1" style="opacity: 0;">.</li><li dot-number="2" style="opacity: 0;">.</li><li dot-number="3" style="opacity: 0;">.</li><li dot-number="4" style="opacity: 0;">.</li><li dot-number="5" style="opacity: 0;">.</li><li dot-number="6" style="opacity: 0;">.</li><li dot-number="7" style="opacity: 0;">.</li><li dot-number="8" style="opacity: 0;">.</li><li dot-number="9" style="opacity: 0;">.</li><li dot-number="10" style="opacity: 0;">.</li><li dot-number="11" style="opacity: 0;">.</li><li dot-number="12" style="opacity: 0;">.</li></ul>
                                         </div>
                                     </div>
                                 </div>
@@ -191,13 +179,18 @@ function getData(note, tone) {
                         </div>
                     </div>
                 `);
-                // console.log(convert(e.frets));
+                // console.log(convert(e.fingers));
             });
+            renderFret();
             await resetNote();
             data["positions"].forEach(async (e, i) => {
                 showChord(convert(e.frets), i);
-
+                showFinger(convert(e.frets), convert(e.fingers), i);
+            });
+            $("#ver-0").on('change', () => {
+                console.log($("#ver-0 #input-fret").val())
             })
+
         })
         .catch((error) => {
             console.error(
@@ -211,7 +204,7 @@ function onChangeData(i) {
     var fret = $(`#chord-${i} #fret-${i}`).val();
     var src = $(`#chord-${i} #chord-img`).attr("src").split("p=");
     src[1] = "p=" + fret + "&s=3";
-    console.log(src.join(""));
+    // console.log(src.join(""));
     $(`#chord-${i} #chord-img`).attr("src", src.join(""));
 }
 function solve(str, i, j) {

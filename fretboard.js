@@ -1,4 +1,5 @@
 var canClick = true;
+const notesClassName = [".low-e", ".a", ".d", ".g", ".b", ".high-e"];
 var notes = {
     e: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#"],
     a: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
@@ -6,19 +7,30 @@ var notes = {
     g: ["G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"],
     b: ["B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#"],
 };
+const hideChord = (i) => {
+    $(`#notes-${i} [note-number]`).animate({ opacity: 0 }, 500);
+};
+const hideFinger = (i) => {
+    $(`#red-dots-${i} [dot-number]`).animate({ opacity: 0 }, 500);
+};
+function renderFret() {
+    for (let i = 23; i >= 0; i--) {
+        // console.log($(".guitar-neck"));
+        if (i == 0) {
+            $(".guitar-neck").prepend(
+                '<div id="fret0" class="fret first"></div>'
+            );
+        } else {
+            $(".guitar-neck").prepend(`<div id="fret${i}" class="fret"></div>`);
+        }
+    }
+}
 const showChord = (fret, i) => {
     canClick = false;
     // $("li[dot-number]").animate({ opacity: 0 }, 500);
     // $("[note-number]").animate({ opacity: 0 }, 500);
-    const notesClassName = [
-        ".mask.low-e",
-        ".mask.a",
-        ".mask.d",
-        ".mask.g",
-        ".mask.b",
-        ".mask.high-e",
-    ];
-    console.log(fret);
+
+    // console.log(fret);
     fret.split("-").forEach((chord, index) => {
         if (chord != "x") {
             $(
@@ -27,6 +39,48 @@ const showChord = (fret, i) => {
         }
     });
 
+    setTimeout(() => {
+        canClick = true;
+    }, 500);
+};
+function goToFretI(indexVersion, indexBarre) {
+    // console.log(indexVersion, indexBarre);
+
+    if (indexBarre > 0) {
+        var myElement = document.querySelectorAll(
+            `#ver-${indexVersion} #fret${indexBarre}`
+        );
+        // console.log(myElement);
+        var topPos = myElement[0].offsetTop;
+        document.querySelector(`#ver-${indexVersion} .fretboard`).scrollTop =
+            topPos;
+
+        topPos = myElement[1].offsetTop;
+        document.querySelectorAll(`#ver-${indexVersion} .fretboard`)[1].scrollTop =
+            topPos;
+    }
+}
+
+const showFinger = (fret, finger, i) => {
+    canClick = false;
+    // $("li[dot-number]").animate({ opacity: 0 }, 500);
+    // $("[note-number]").animate({ opacity: 0 }, 500);
+    finger = finger.split("-");
+    // console.log("fret:",fret);
+    // console.log("finger:",finger);
+    var min = 24;
+    fret.split("-").forEach((chord, index) => {
+        if (chord != "X") {
+            // console.log(chord);
+            min = Math.min(min, parseInt(chord));
+            $(
+                `#red-dots-${i} ${notesClassName[index]} ul li[dot-number="${chord}"]`
+            )
+                .text(finger[index])
+                .animate({ opacity: 1 }, 500);
+        }
+    });
+    goToFretI(i, min - 1);
     setTimeout(() => {
         canClick = true;
     }, 500);
@@ -111,3 +165,4 @@ $goTop.on("click", function () {
         150
     );
 });
+
