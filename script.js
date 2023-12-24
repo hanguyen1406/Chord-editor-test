@@ -54,6 +54,7 @@ function getData(note, tone) {
         .then(async (data) => {
             // console.log(data['positions']);
             noc = data["positions"].length;
+            barres = Array.from({ length: noc }).fill(0);
             $("#nov").text(
                 `Hiện có tất cả ${noc} version hợp âm ${note} ${tone}`
             );
@@ -84,9 +85,9 @@ function getData(note, tone) {
                                     <input id="input-capo" type="number" value="${capo}" class="form-control">
                                 </div>
                                 <div class="d-grid gap-2 mt-2">
-                                    <button class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
-                                    <button class="btn btn-primary" type="button">Move down <img style="width:20px" src="img/down-arrow.png"/></button>
-                                    <button class="btn btn-danger" type="button">Delete <img style="width:20px" src="img/delete.png"/></button>
+                                    <button onclick="swUp(${i})" class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
+                                    <button onclick="swDown(${i})" class="btn btn-primary" type="button">Move down <img style="width:20px" src="img/down-arrow.png"/></button>
+                                    <button onclick="deleteChord(${i})" class="btn btn-danger" type="button">Delete <img style="width:20px" src="img/delete.png"/></button>
                                 </div>
                             </div>
                         </div>
@@ -203,57 +204,57 @@ function getData(note, tone) {
         });
 }
 
-function onChangeData(i) {
-    var fret = $(`#chord-${i} #fret-${i}`).val();
-    var src = $(`#chord-${i} #chord-img`).attr("src").split("p=");
-    src[1] = "p=" + fret + "&s=3";
-    // console.log(src.join(""));
-    $(`#chord-${i} #chord-img`).attr("src", src.join(""));
-}
 function solve(str, i, j) {
-    res = "";
-    str.split('"').forEach((e) => {
-        // console.log(e);
-        res +=
-            e
-                .replace(`(${i})`, `(${j})`)
-                .replace(`t-${i}`, `t-${j}`)
-                .replace(`r-${i}`, `r-${j}`)
-                .replace(`o-${i}`, `o-${j}`) + '"';
-    });
-    return res.slice(0, -1);
+    str = str.replace(`#ver-${i}`, `#ver-${j}`);
+    str = str.replace(`swUp(${i})`, `swUp(${j})`);
+    str = str.replace(`swDown(${i})`, `swDown(${j})`);
+    str = str.replace(`notes-${i}`, `notes-${j}`);
+    str = str.replace(`red-dots-${i}`, `red-dots-${j}`);
+    // console.log("i:", i, ", j:", j);
+    str = str.replace(`"num">${i + 1}`, `"num">${j + 1}`);
+    //update current barres if have
+    return str;
 }
 
 function swUp(i) {
     if (i > 0) {
-        var chord0 = $(`#chord-${i - 1}`).html();
-        chord0 = solve(chord0, i - 1, i);
-        $(`#chord-${i - 1}`).html(solve($(`#chord-${i}`).html(), i, i - 1));
-        $(`#chord-${i}`).html(chord0);
+        var chord0 = solve($(`#ver-${i}`).html(), i, i - 1);
+        var chord1 = solve($(`#ver-${i - 1}`).html(), i - 1, i);
+        $(`#ver-${i - 1}`).html(chord0);
+        $(`#ver-${i}`).html(chord1);
+        // console.log(chord0);
+        [barres[i], barres[i - 1]] = [barres[i - 1], barres[i]];
+        goToFretI(i, parseInt(barres[i]));
+        goToFretI(i - 1, parseInt(barres[i - 1]));
+
+        sort = false;
     }
-    sort = false;
 }
 function swDown(i) {
     if (i < noc - 1) {
-        var chord0 = $(`#chord-${i + 1}`).html();
-        chord0 = solve(chord0, i + 1, i);
-        $(`#chord-${i + 1}`).html(solve($(`#chord-${i}`).html(), i, i + 1));
-        $(`#chord-${i}`).html(chord0);
+        var chord0 = solve($(`#ver-${i}`).html(), i, i + 1);
+        var chord1 = solve($(`#ver-${i + 1}`).html(), i + 1, i);
+        $(`#ver-${i + 1}`).html(chord0);
+        $(`#ver-${i}`).html(chord1);
+        [barres[i], barres[i + 1]] = [barres[i + 1], barres[i]];
+        goToFretI(i, parseInt(barres[i]));
+        goToFretI(i + 1, parseInt(barres[i + 1]));
+        sort = false;
     }
-    sort = false;
 }
 function deleteChord(i) {
-    // console.log(i);
-    if (i < noc - 1) alert("Chỉ xóa được hợp âm cuối!");
-    else if (sort) {
+    console.log(noc);
+    if (sort && i < noc - 1) alert("Chỉ xóa được hợp âm cuối!");
+    else if (sort && i == noc - 1) {
         var result = window.confirm(`Chắn chắn xóa version: ${i + 1}`);
         if (result === true) {
-            $(`#chord-${i}`).remove();
+            $(`#ver-${i}`).remove();
+            noc--;
+        } else {
         }
-        noc--;
     } else {
-        alert("Cần reload lại trang để xóa!");
-        $("#save").click();
+        alert("Cần lưu lại thứ tự mới để xóa!");
+        $(".save").click();
     }
 }
 function changeNewData() {
@@ -274,7 +275,6 @@ function convToHex(decimal) {
 //     console.log(convToHex(i));
 // }
 function save() {
-    // console.log($('.fret')[0])
     var res = {
         key: note,
         suffix: minor,
@@ -282,27 +282,27 @@ function save() {
     };
     for (let i = 0; i < noc; i++) {
         var p = { frets: "", fingers: "" };
-        $("#fret-" + i)
+        $(`#ver-${i} #input-fret`)
             .val()
             .split("-")
             .forEach((i) => {
                 if (i != "X") p.frets += convToHex(Number(i)).toLowerCase();
                 else p.frets += "x";
             });
-        $("#finger-" + i)
+        $(`#ver-${i} #input-finger`)
             .val()
             .split("-")
             .forEach((i) => {
                 p.fingers += convToHex(Number(i));
             });
-        var capo = $("#capo-" + i).val();
+        var capo = $(`#ver-${i} #input-capo`).val();
         if (capo) {
             p.capo = "true";
             p.barres = capo;
         }
         res.positions.push(p);
     }
-    // console.log(res);
+    console.log(res);
     //save to sever
     // URL of the PHP script
     var url = "saveChord.php";

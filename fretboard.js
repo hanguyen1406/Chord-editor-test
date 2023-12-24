@@ -1,5 +1,6 @@
 var canClick = true;
 const notesClassName = [".low-e", ".a", ".d", ".g", ".b", ".high-e"];
+var barres;
 var notes = {
     e: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#"],
     a: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
@@ -14,11 +15,11 @@ const hideFinger = (i) => {
     $(`#red-dots-${i} [dot-number]`).animate({ opacity: 0 }, 500);
 };
 const hideBarre = (i) => {
-    $("#barres").animate({ opacity: 0 }, 500);
+    $(`#notes-${i} #barres`).animate({ opacity: 0 }, 500);
 };
 const renderBarre = (indexVersion, indexBarre) => {
-    console.log('version:',indexVersion)
-    console.log('barre:',indexBarre)
+    // console.log("version:", indexVersion);
+    // console.log("barre:", indexBarre);
     $(`#notes-${indexVersion} #barres`).animate(
         { top: `${indexBarre * 78.3}px`, opacity: 1 },
         500
@@ -49,7 +50,7 @@ const showChord = (fret, i, capo) => {
     // $("li[dot-number]").animate({ opacity: 0 }, 500);
     // $("[note-number]").animate({ opacity: 0 }, 500);
 
-    console.log(fret);
+    // console.log(fret);
     var min = 24;
     fret.split("-").forEach((chord, index) => {
         if (chord != "X") {
@@ -59,7 +60,9 @@ const showChord = (fret, i, capo) => {
             min = Math.min(min, parseInt(chord));
         }
     });
+    barres[i] = min - 1;
     if (capo) renderBarre(i, capo);
+    else hideBarre(i);
     setTimeout(() => {
         canClick = true;
     }, 500);
@@ -67,7 +70,7 @@ const showChord = (fret, i, capo) => {
 function goToFretI(indexVersion, indexBarre) {
     // console.log(indexVersion, indexBarre);
 
-    if (indexBarre > 0) {
+    if (indexBarre && indexBarre > 0) {
         var myElement = document.querySelectorAll(
             `#ver-${indexVersion} #fret${indexBarre}`
         );
@@ -109,7 +112,7 @@ const showFinger = (fret, finger, i) => {
 };
 function resetNote() {
     // $(".notes ul").text("");
-    for (let i = 0; i < notes.e.length*2; i++) {
+    for (let i = 0; i < notes.e.length * 2; i++) {
         $(".mask.low-e ul").append(
             "<li note-number=" +
                 i +
@@ -167,23 +170,35 @@ function resetNote() {
     }
 }
 function resetFinger() {
-    for (let i = 0; i < notes.e.length*2; i++) {
+    for (let i = 0; i < notes.e.length * 2; i++) {
         $(".red-dots .low-e ul").append(
-            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`
+        );
         $(".red-dots .a ul").append(
-            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`
+        );
         $(".red-dots .d ul").append(
-            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`
+        );
         $(".red-dots .g ul").append(
-            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`
+        );
         $(".red-dots .b ul").append(
-            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`
+        );
         $(".red-dots .high-e ul").append(
-            `<li dot-number="${i}" style="opacity: 0;">.</li>`);
+            `<li dot-number="${i}" style="opacity: 0;">.</li>`
+        );
     }
 }
 var $goTop = $(".go-top");
 $goTop.hide();
+
+$(".save").on("click", () => {
+    if (confirm("Chắn chắn lưu version hợp âm hiện tại!")) {
+        save();
+    }
+});
 
 $(window).on("scroll", function () {
     if ($(this).scrollTop() > 200) {
