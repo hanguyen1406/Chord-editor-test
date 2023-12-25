@@ -67,7 +67,7 @@ function getData(note, tone) {
                             <b class="num">${i + 1}</b>
                         </div>
                         <div class="col-3">
-                            <div style="margin-top: 50px">
+                            <div style="margin-top: 30px">
                                 <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="addon-wrapping"><b>Frets:</b></span>
                                 <input id="input-fret" type="text" value="${convert(
@@ -88,6 +88,7 @@ function getData(note, tone) {
                                     <button onclick="swUp(${i})" class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
                                     <button onclick="swDown(${i})" class="btn btn-primary" type="button">Move down <img style="width:20px" src="img/down-arrow.png"/></button>
                                     <button onclick="deleteChord(${i})" class="btn btn-danger" type="button">Delete <img style="width:20px" src="img/delete.png"/></button>
+                                    <button onclick="addChord(${i})" class="btn btn-success" type="button">Add chord <img style="width:20px" src="img/add.png"/></button>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +211,10 @@ function solve(str, i, j) {
     str = str.replace(`swDown(${i})`, `swDown(${j})`);
     str = str.replace(`notes-${i}`, `notes-${j}`);
     str = str.replace(`red-dots-${i}`, `red-dots-${j}`);
+
+    str = str.replace(`deleteChord(${i})`, `deleteChord(${j})`);
+    str = str.replace(`addChord(${i})`, `addChord(${j})`);
+
     // console.log("i:", i, ", j:", j);
     str = str.replace(`"num">${i + 1}`, `"num">${j + 1}`);
     //update current barres if have

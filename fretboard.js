@@ -194,6 +194,33 @@ function resetFinger() {
 var $goTop = $(".go-top");
 $goTop.hide();
 
+async function addChord(i) {
+    var chord = $(`#ver-${i}`);
+    var newChordCode = solve(chord.html(), i, i + 1);
+    barres.splice(i + 1, 0, barres[i]);
+    for (let j = i + 1; j < noc; j++) {
+        await $(`#ver-${j}`).html(solve($(`#ver-${j}`).html(), j, j + 1));
+    }
+    for (let j = noc - 1; j > i; j--) {
+        // console.log(j);
+        $(`#ver-${j}`).attr("id", `ver-${j + 1}`);
+    }
+    chord.after(
+        `<div id="ver-${
+            i + 1
+        }" class="row m-1 p-2 chord-v">${newChordCode}</div>`
+    );
+    noc++;
+    for (let j = 0; j < noc; j++) {
+        $(`#ver-${j}`).on("change", async () => {
+            await hideChord(j);
+            await hideFinger(j);
+            updateChord(j);
+        });
+        goToFretI(j, barres[j]);
+    }
+}
+
 $(".save").on("click", () => {
     if (confirm("Chắn chắn lưu version hợp âm hiện tại!")) {
         save();
