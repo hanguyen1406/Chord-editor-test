@@ -331,7 +331,8 @@ function save() {
         .then((data) => {
             if (data == "1") {
                 alert("Lưu thành công, reload lại trang");
-                location.reload(true);
+                location.href = location.href.split('?')[0] + '?v=' + Date.now();
+
             }
         })
         .catch((error) => {

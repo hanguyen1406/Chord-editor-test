@@ -23,6 +23,7 @@ body {
     line-height: 30px;
 }
 .save{
+    height: 44px;
     width: 200px;
     margin-left: 40px;
     border-radius: 50px;
