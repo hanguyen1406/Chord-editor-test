@@ -221,12 +221,6 @@ async function addChord(i) {
     }
 }
 
-$(".save").on("click", () => {
-    if (confirm("Chắn chắn lưu version hợp âm hiện tại!")) {
-        save();
-    }
-});
-
 $(window).on("scroll", function () {
     if ($(this).scrollTop() > 200) {
         $goTop.fadeIn(500);

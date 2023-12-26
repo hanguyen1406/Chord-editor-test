@@ -8,5 +8,5 @@ $file = 'chords/'.$data['key'].'/'.$data['suffix'].'.json';
 // $file = 'chords/'.$data['key'].'/'.$data['suffix'].'.json';
 file_put_contents($file, json_encode($data));
 
-echo '1';
+echo $file;
 ?>

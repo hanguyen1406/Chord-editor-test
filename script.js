@@ -7,10 +7,14 @@ function showmenu(i) {
     $(`#selector #drop-${i}-content`).show();
 }
 function chordsChooser(i) {
-    if (i == "major" || i == "minor") $("#dropbtn-minor").text(i);
-    else $("#dropbtn-note").text(i);
+    if (i == "major" || i == "minor") {
+        $("#dropbtn-minor").text(i);
+        minor = i;
+    } else {
+        $("#dropbtn-note").text(i);
+        note = i;
+    }
     changeNewData();
-    // ACTIVE_NOTE_FEATURE();
 }
 $(function () {
     var $win = $(window),
@@ -58,6 +62,7 @@ function getData(note, tone) {
             $("#nov").text(
                 `Hiện có tất cả ${noc} version hợp âm ${note} ${tone}`
             );
+            console.log(data);
             data["positions"].forEach(async (e, i) => {
                 var capo = e["capo"] ? e["barres"] : "";
 
@@ -263,8 +268,6 @@ function deleteChord(i) {
     }
 }
 function changeNewData() {
-    note = $("#dropbtn-note").text().replace(/\s+/g, " ").trim();
-    minor = $("#dropbtn-minor").text().replace(/\s+/g, " ").trim();
     getData(note, minor);
 }
 changeNewData();
@@ -279,67 +282,71 @@ function convToHex(decimal) {
 // for (var i = 0; i < 25; i++) {
 //     console.log(convToHex(i));
 // }
-function save() {
-    var res = {
-        key: note,
-        suffix: minor,
-        positions: [],
-    };
-    for (let i = 0; i < noc; i++) {
-        var p = { frets: "", fingers: "" };
-        $(`#ver-${i} #input-fret`)
-            .val()
-            .split("-")
-            .forEach((i) => {
-                if (i != "X") p.frets += convToHex(Number(i)).toLowerCase();
-                else p.frets += "x";
-            });
-        $(`#ver-${i} #input-finger`)
-            .val()
-            .split("-")
-            .forEach((i) => {
-                p.fingers += convToHex(Number(i));
-            });
-        var capo = $(`#ver-${i} #input-capo`).val();
-        if (capo) {
-            p.capo = "true";
-            p.barres = capo;
+async function save() {
+    if (confirm("Chắn chắn lưu version hợp âm hiện tại!")) {
+        var res = {
+            key: note,
+            suffix: minor,
+            positions: [],
+        };
+        for (let i = 0; i < noc; i++) {
+            var p = { frets: "", fingers: "" };
+            $(`#ver-${i} #input-fret`)
+                .val()
+                .split("-")
+                .forEach((i) => {
+                    if (i != "X") p.frets += convToHex(Number(i)).toLowerCase();
+                    else p.frets += "x";
+                });
+            $(`#ver-${i} #input-finger`)
+                .val()
+                .split("-")
+                .forEach((i) => {
+                    p.fingers += convToHex(Number(i));
+                });
+            var capo = $(`#ver-${i} #input-capo`).val();
+            if (capo) {
+                p.capo = "true";
+                p.barres = capo;
+            }
+            res.positions.push(p);
         }
-        res.positions.push(p);
+        console.log(res);
+        //save to sever
+        // URL of the PHP script
+        var url = "saveChord.php";
+
+        // Fetch request configuration
+        var requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(res),
+        };
+        // Send the data to the server using fetch
+        await fetch(url, requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.text(); // Parse the response body as JSON
+            })
+            .then((data) => {
+                if (data) {
+                    alert("Lưu thành công, reload lại trang");
+                    console.log(data);
+                    location.href =
+                        location.href.split("?")[0] + "?v=" + Date.now();
+                    getData();
+                }
+            })
+            .catch((error) => {
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+                // Handle errors here
+            });
     }
-    console.log(res);
-    //save to sever
-    // URL of the PHP script
-    var url = "saveChord.php";
-
-    // Fetch request configuration
-    var requestOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(res),
-    };
-    // Send the data to the server using fetch
-    fetch(url, requestOptions)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.text(); // Parse the response body as JSON
-        })
-        .then((data) => {
-            if (data == "1") {
-                alert("Lưu thành công, reload lại trang");
-                location.href = location.href.split('?')[0] + '?v=' + Date.now();
-
-            }
-        })
-        .catch((error) => {
-            console.error(
-                "There was a problem with the fetch operation:",
-                error
-            );
-            // Handle errors here
-        });
 }

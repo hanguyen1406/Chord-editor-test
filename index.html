@@ -26,28 +26,18 @@
                         C
                     </button>
                     <div id="drop-note-content" class="dropdown-content">
-                        <a id="" onclick="chordsChooser('C')" href="#">C</a>
-                        <a id="" onclick="chordsChooser('C#')" href="#"
-                            >C#/Db</a
-                        >
-                        <a id="" onclick="chordsChooser('D')" href="#">D</a>
-                        <a id="" onclick="chordsChooser('D#')" href="#"
-                            >D#/Eb</a
-                        >
-                        <a id="" onclick="chordsChooser('E')" href="#">E</a>
-                        <a id="" onclick="chordsChooser('F')" href="#">F</a>
-                        <a id="" onclick="chordsChooser('F#')" href="#"
-                            >F#/Gb</a
-                        >
-                        <a id="" onclick="chordsChooser('G')" href="#">G</a>
-                        <a id="" onclick="chordsChooser('G#')" href="#"
-                            >G#/Ab</a
-                        >
-                        <a id="" onclick="chordsChooser('A')" href="#">A</a>
-                        <a id="" onclick="chordsChooser('A#')" href="#"
-                            >A#/Bb</a
-                        >
-                        <a id="" onclick="chordsChooser('B')" href="#">B</a>
+                        <a id="" onclick="chordsChooser('C')">C</a>
+                        <a id="" onclick="chordsChooser('C#')">C#/Db</a>
+                        <a id="" onclick="chordsChooser('D')">D</a>
+                        <a id="" onclick="chordsChooser('D#')">D#/Eb</a>
+                        <a id="" onclick="chordsChooser('E')">E</a>
+                        <a id="" onclick="chordsChooser('F')">F</a>
+                        <a id="" onclick="chordsChooser('F#')">F#/Gb</a>
+                        <a id="" onclick="chordsChooser('G')">G</a>
+                        <a id="" onclick="chordsChooser('G#')">G#/Ab</a>
+                        <a id="" onclick="chordsChooser('A')">A</a>
+                        <a id="" onclick="chordsChooser('A#')">A#/Bb</a>
+                        <a id="" onclick="chordsChooser('B')">B</a>
                     </div>
                 </div>
                 <div class="dropdown" id="selector" style="width: 63px">
@@ -59,23 +49,19 @@
                         major
                     </button>
                     <div id="drop-minor-content" class="dropdown-content">
-                        <a id="" onclick="chordsChooser('major')" href="#"
-                            >major</a
-                        >
-                        <a id="" onclick="chordsChooser('minor')" href="#"
-                            >minor</a
-                        >
+                        <a id="" onclick="chordsChooser('major')">major</a>
+                        <a id="" onclick="chordsChooser('minor')">minor</a>
                     </div>
                 </div>
-            
-                <button id="save-chord" class="save">Save</button>
+
+                <button onclick="save()" class="save">Save</button>
             </div>
             <h4 id="nov"></h4>
             <div id="list-chord" class="row"></div>
             <br />
             <div class="row justify-content-center">
                 <div class="col-3">
-                    <button class="save">Save</button>
+                    <button onclick="save()" class="save">Save</button>
                 </div>
             </div>
             <br />
