@@ -48,7 +48,8 @@ function getData(note, tone) {
     $("#list-chord").text("");
     var a = "";
     if (note[1] == "#") a = "sharp";
-    fetch(`./chords/${note[0] + a}/${tone}.json`)
+    // console.log(`chords/${note[0] + a}/${tone}.json`);
+    fetch(`chords/${note[0] + a}/${tone}.json`)
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -62,7 +63,7 @@ function getData(note, tone) {
             $("#nov").text(
                 `Hiện có tất cả ${noc} version hợp âm ${note} ${tone}`
             );
-            console.log(data);
+            // console.log(data);
             data["positions"].forEach(async (e, i) => {
                 var capo = e["capo"] ? e["barres"] : "";
 
@@ -253,7 +254,7 @@ function swDown(i) {
     }
 }
 function deleteChord(i) {
-    console.log(noc);
+    // console.log(noc);
     if (sort && i < noc - 1) alert("Chỉ xóa được hợp âm cuối!");
     else if (sort && i == noc - 1) {
         var result = window.confirm(`Chắn chắn xóa version: ${i + 1}`);
@@ -311,7 +312,7 @@ async function save() {
             }
             res.positions.push(p);
         }
-        console.log(res);
+        // console.log(res);
         //save to sever
         // URL of the PHP script
         var url = "saveChord.php";
@@ -325,6 +326,8 @@ async function save() {
             body: JSON.stringify(res),
         };
         // Send the data to the server using fetch
+        // console.log(res);
+
         await fetch(url, requestOptions)
             .then((response) => {
                 if (!response.ok) {
@@ -338,7 +341,6 @@ async function save() {
                     console.log(data);
                     location.href =
                         location.href.split("?")[0] + "?v=" + Date.now();
-                    getData();
                 }
             })
             .catch((error) => {
