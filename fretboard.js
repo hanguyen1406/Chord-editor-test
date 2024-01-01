@@ -64,7 +64,7 @@ const showChord = (fret, i, capo) => {
     console.log("update chord");
     var min = 24;
     fret.split("-").forEach((chord, index) => {
-        if(chord == "X") {
+        if(chord == "x") {
             $(`#ver-${i} #indicate ${notesClassName[index]}`)
                     .text("")
                     .prepend(
@@ -89,7 +89,7 @@ const showChord = (fret, i, capo) => {
                 })
                 .animate(500);
         }
-        else if (chord != "X") {
+        else if (chord != "x") {
             var noteToShow = $(
                 `#notes-${i} ${notesClassName[index]} ul li[note-number="${chord}"]`
             )
@@ -139,7 +139,7 @@ const showFinger = (fret, finger, i) => {
     // console.log("finger:",finger);
     var min = 24;
     fret.split("-").forEach((chord, index) => {
-        if (chord != "X") {
+        if (chord != "x") {
             // console.log(chord);
             min = Math.min(min, parseInt(chord));
             $(

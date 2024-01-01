@@ -38,8 +38,10 @@ function convToDec(char) {
 }
 function convert(str) {
     var res = str.toUpperCase().split("");
+    console.log(res);
     res.forEach((s, i) => {
-        if (s != "X" && s != "0") res[i] = convToDec(s);
+        if(s == "X") res[i] = "x";
+        else if (s != "X" && s != "0") res[i] = convToDec(s);
     });
 
     return res.join("-");
