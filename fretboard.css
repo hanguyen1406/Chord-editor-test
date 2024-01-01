@@ -36,7 +36,7 @@ h1 {
 .fretboard{
   /* margin-left: 50px; */
   width: 257px;
-  height: 370px;
+  height: 335px;
   overflow-y:hidden;
   overflow-x:hidden;
   /* padding-right: 15px; */
@@ -80,6 +80,7 @@ h1 {
 .guitar-neck {
   position: relative;
   /* left: 25px; */
+  padding-top: 7px;
   width: 100%;
   height: 2010px;
   background: #755628;
@@ -129,6 +130,31 @@ h1 {
   left: 230px;
 }
 
+#indicate .open-notes li {
+  /* float: left; */
+  width: 28px;
+  height: 28px;
+  background: #fa990f;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+#indicate {
+  width: 100%;
+  height: 20px;
+  margin-bottom: 15px;
+}
+#indicate .open-notes {
+  position: relative;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 93%;
+  padding-left: 0px;
+  /* left:-2px */
+}
 
 .guitar-neck .open-notes li.active {
   color: #fa990f;
@@ -141,12 +167,12 @@ h1 {
 }
 .guitar-neck .fret.first {
   margin: 0;
+  top: -6px;
   position: relative;
-  height: 50px;
+  height: 20px;
   width: 100%;
   background: #211f1d;
   z-index: 4;
-  top: -5px;
 }
 .guitar-neck .dots {
   position: absolute;
@@ -199,7 +225,7 @@ h1 {
 }
 .guitar-neck .notes {
   position: absolute;
-  top: -8px;
+  top: -30px;
   width: 100%;
   height: 2010px;
   overflow-y: hidden;
@@ -246,7 +272,7 @@ h1 {
 }
 .guitar-neck .compartment-number {
   position: absolute;
-  top: 62px;
+  top: 42px;
   left: -70px;
 }
 
@@ -334,7 +360,7 @@ h1 {
 /* Red dot */
 .guitar-neck .red-dots {
   position: absolute;
-  top: 30px;
+  top: 5px;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
