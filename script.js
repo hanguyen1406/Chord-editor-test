@@ -38,8 +38,10 @@ function convToDec(char) {
 }
 function convert(str) {
     var res = str.toUpperCase().split("");
+    console.log(res);
     res.forEach((s, i) => {
-        if (s != "X" && s != "0") res[i] = convToDec(s);
+        if(s == "X") res[i] = "x";
+        else if (s != "X" && s != "0") res[i] = convToDec(s);
     });
 
     return res.join("-");
@@ -95,6 +97,10 @@ function getData(note, tone) {
                                     <input id="interval" type="text" class="form-control">
                                 </div>
                                 
+                                <div class="input-group flex-nowrap">
+                                    <span class="input-group-text" id="addon-wrapping"><b>Interval</b></span>
+                                    <input id="input-interval" type="text" class="form-control">
+                                </div>
                                 <div class="d-grid gap-2 mt-2">
                                     <button onclick="swUp(${i})" class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
                                     <button onclick="swDown(${i})" class="btn btn-primary" type="button">Move down <img style="width:20px" src="img/down-arrow.png"/></button>
@@ -104,6 +110,19 @@ function getData(note, tone) {
                             </div>
                         </div>
                         <div class="col-4">
+                            <div id="indicate">
+                                <div style="display: inline-block;max-width: 275px; width: 87%; height: 100%; margin-left:50px">
+                                    <!-- <div style="width: 22px; height: 100%; display: inline-block;"></div> -->
+                                    <ul class="open-notes">
+                                        <li class="low-e active">E</li>
+                                        <li class="a">A</li>
+                                        <li class="d">D</li>
+                                        <li class="g">G</li>
+                                        <li class="b">B</li>
+                                        <li class="high-e">E</li>
+                                    </ul>
+                                </div>
+                            </div>
                             <div style="padding-left:50px; width: 307px" class="fretboard">
                                 <div class="guitar-neck">
                                     <ul class="strings">
@@ -113,15 +132,6 @@ function getData(note, tone) {
                                         <li></li>
                                         <li></li>
                                         <li></li>
-                                    </ul>
-                
-                                    <ul class="open-notes">
-                                        <li class="low-e">E</li>
-                                        <li class="b">B</li>
-                                        <li class="g">G</li>
-                                        <li class="d">D</li>
-                                        <li class="a">A</li>
-                                        <li class="high-e">E</li>
                                     </ul>
                                     <div id="notes-${i}" class="notes">
                                         <div id="barres"></div>
@@ -148,7 +158,20 @@ function getData(note, tone) {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
+                        <div id="indicate">
+                            <div style="display: inline-block;max-width: 275px; width: 88%; height: 100%;">
+                                <!-- <div style="width: 22px; height: 100%; display: inline-block;"></div> -->
+                                <ul class="open-notes">
+                                    <li class="low-e active">E</li>
+                                    <li class="a">A</li>
+                                    <li class="d">D</li>
+                                    <li class="g">G</li>
+                                    <li class="b">B</li>
+                                    <li class="high-e">E</li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="fretboard">
                                 <div class="guitar-neck">
                                     <ul class="strings">
@@ -158,15 +181,6 @@ function getData(note, tone) {
                                         <li></li>
                                         <li></li>
                                         <li></li>
-                                    </ul>
-                
-                                    <ul class="open-notes">
-                                        <li class="low-e">E</li>
-                                        <li class="b">B</li>
-                                        <li class="g">G</li>
-                                        <li class="d">D</li>
-                                        <li class="a">A</li>
-                                        <li class="high-e">E</li>
                                     </ul>
                                     <div id="red-dots-${i}" class="red-dots">
                                         <div class="red-dot low-e">
@@ -197,6 +211,7 @@ function getData(note, tone) {
                 $(`#ver-${i}`).on("change", async () => {
                     await hideChord(i);
                     await hideFinger(i);
+                    resetOpenNote(i);
                     updateChord(i);
                 });
             });
