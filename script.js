@@ -73,12 +73,12 @@ function getData(note, tone) {
                             <b class="num">${i + 1}</b>
                         </div>
                         <div class="col-3">
-                            <div style="margin-top: 30px">
+                            <div style="margin-top: 15px">
                                 <div class="input-group flex-nowrap">
-                                <span class="input-group-text" id="addon-wrapping"><b>Frets:</b></span>
-                                <input id="input-fret" type="text" value="${convert(
-                                    e.frets
-                                )}" class="form-control">
+                                    <span class="input-group-text" id="addon-wrapping"><b>Frets:</b></span>
+                                    <input id="input-fret" type="text" value="${convert(
+                                        e.frets
+                                    )}" class="form-control">
                                 </div>
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping"><b>Fingers:</b></span>
@@ -90,6 +90,11 @@ function getData(note, tone) {
                                     <span class="input-group-text" id="addon-wrapping"><b>Capo:</b></span>
                                     <input id="input-capo" type="number" value="${capo}" class="form-control">
                                 </div>
+                                <div class="input-group flex-nowrap">
+                                    <span class="input-group-text" id="addon-wrapping"><b>Interval:</b></span>
+                                    <input id="interval" type="text" class="form-control">
+                                </div>
+                                
                                 <div class="d-grid gap-2 mt-2">
                                     <button onclick="swUp(${i})" class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
                                     <button onclick="swDown(${i})" class="btn btn-primary" type="button">Move down <img style="width:20px" src="img/down-arrow.png"/></button>
