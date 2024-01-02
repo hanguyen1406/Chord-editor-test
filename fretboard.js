@@ -102,6 +102,11 @@ const showChord = (fret, i, capo) => {
                     `.notes ${notesClassName[index]} ul li[note-number="${chord}"]`
                 ).css({ "background-color": "#007D1D" });
             }
+            $(`#ver-${i} #indicate ${notesClassName[index]}`).css({
+                color: "rgb(134, 124, 108)",
+                "background-color": "rgb(254 244 229)",
+            })
+            .animate(500);
         }
     });
     barres[i] = min - 1;
