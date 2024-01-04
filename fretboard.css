@@ -169,7 +169,7 @@ h1 {
   margin: 0;
   top: -6px;
   position: relative;
-  height: 20px;
+  height: 15px;
   width: 100%;
   background: #211f1d;
   z-index: 4;
@@ -225,7 +225,7 @@ h1 {
 }
 .guitar-neck .notes {
   position: absolute;
-  top: -30px;
+  top: -35px;
   width: 100%;
   height: 2010px;
   overflow-y: hidden;
@@ -360,7 +360,7 @@ h1 {
 /* Red dot */
 .guitar-neck .red-dots {
   position: absolute;
-  top: 5px;
+  top: 0px;
   width: 100%;
   height: 100%;
   overflow-x: hidden;

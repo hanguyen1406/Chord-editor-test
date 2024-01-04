@@ -14,6 +14,9 @@ function chordsChooser(i) {
         $("#dropbtn-note").text(i);
         note = i;
     }
+    if (minor == "minor") scale = noteToMinorScale(note);
+    else scale = noteToMajorScale(note);
+    console.log(scale);
     changeNewData();
 }
 $(function () {
@@ -38,9 +41,8 @@ function convToDec(char) {
 }
 function convert(str) {
     var res = str.toUpperCase().split("");
-    console.log(res);
     res.forEach((s, i) => {
-        if(s == "X") res[i] = "x";
+        if (s == "X") res[i] = "x";
         else if (s != "X" && s != "0") res[i] = convToDec(s);
     });
 
@@ -50,8 +52,8 @@ function getData(note, tone) {
     $("#list-chord").text("");
     var a = "";
     if (note[1] == "#") a = "sharp";
-    // console.log(`chords/${note[0] + a}/${tone}.json`);
     fetch(`chords/${note[0] + a}/${tone}.json`)
+        // fetch(`../chords1/chords/${note[0] + a}/${tone}.json`)
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Network response was not ok");
@@ -95,11 +97,6 @@ function getData(note, tone) {
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping"><b>Interval:</b></span>
                                     <input id="interval" type="text" class="form-control">
-                                </div>
-                                
-                                <div class="input-group flex-nowrap">
-                                    <span class="input-group-text" id="addon-wrapping"><b>Interval</b></span>
-                                    <input id="input-interval" type="text" class="form-control">
                                 </div>
                                 <div class="d-grid gap-2 mt-2">
                                     <button onclick="swUp(${i})" class="btn btn-primary" type="button">Move up <img style="width:20px" src="img/up-arrow.png"/></button>
@@ -221,6 +218,8 @@ function getData(note, tone) {
             data["positions"].forEach(async (e, i) => {
                 showChord(convert(e.frets), i, e.barres);
                 showFinger(convert(e.frets), convert(e.fingers), i);
+                // console.log(scale);
+                $(`#ver-${i} #interval`).val(fretToInterval(e.frets, i));
             });
         })
         .catch((error) => {
@@ -229,6 +228,27 @@ function getData(note, tone) {
                 error
             );
         });
+}
+
+function fretToInterval(frets, indexVersion) {
+    res = [];
+    // console.log(frets);
+    convert(frets)
+        .split("-")
+        .forEach((fret, i) => {
+            if (fret != "x") {
+                var noteToShow = $(
+                    `#notes-${indexVersion} ${notesClassName[i]} ul li[note-number="${fret}"]`
+                );
+                for (let j = 0; j < scale.length; j++) {
+                    if (scale[j] == noteToShow.text()) {
+                        res.push(interval[j]);
+                        break;
+                    }
+                }
+            }
+        });
+    return res.join("-");
 }
 
 function solve(str, i, j) {
@@ -316,7 +336,7 @@ async function save() {
                 .val()
                 .split("-")
                 .forEach((i) => {
-                    if (i != "X") p.frets += convToHex(Number(i)).toLowerCase();
+                    if (i != "x") p.frets += convToHex(Number(i)).toLowerCase();
                     else p.frets += "x";
                 });
             $(`#ver-${i} #input-finger`)
@@ -332,7 +352,7 @@ async function save() {
             }
             res.positions.push(p);
         }
-        // console.log(res);
+        console.log(res);
         //save to sever
         // URL of the PHP script
         var url = "saveChord.php";
@@ -346,7 +366,7 @@ async function save() {
             body: JSON.stringify(res),
         };
         // Send the data to the server using fetch
-        // console.log(res);
+        console.log(res);
 
         await fetch(url, requestOptions)
             .then((response) => {
@@ -358,7 +378,7 @@ async function save() {
             .then((data) => {
                 if (data) {
                     alert("Lưu thành công, reload lại trang");
-                    console.log(data);
+                    // console.log(data);
                     location.href =
                         location.href.split("?")[0] + "?v=" + Date.now();
                 }

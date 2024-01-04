@@ -10,6 +10,21 @@ var notes = {
 };
 var noteToShow = "C";
 var openNote = ["E", "A", "D", "G", "B", "E"];
+var scale = ["C", "D", "E", "F", "G", "A", "B"];
+var interval = [
+    "P1",
+    "m2",
+    "M2",
+    "m3",
+    "M3",
+    "P4",
+    "A4",
+    "P5",
+    "m6",
+    "M6",
+    "m7",
+    "M7",
+];
 const hideChord = (i) => {
     $(`#notes-${i} [note-number]`).animate({ opacity: 0 }, 500);
 };
@@ -27,14 +42,64 @@ const renderBarre = (indexVersion, indexBarre) => {
         500
     );
 };
+const noteToMajorScale = (note) => {
+    let a = ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#"];
+    let res = [];
+
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] === note) {
+            let j = 0;
+            while (1) {
+                res.push(a[(i + j) % 12]);
+                if (j === 4) {
+                    j -= 1;
+                }
+                j += 2;
+                if (j >= 13) {
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    return res;
+};
+
+const noteToMinorScale = (note) => {
+    let a = ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#"];
+    let res = [];
+
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] === note) {
+            let j = 0;
+            while (1) {
+                res.push(a[(i + j) % 12]);
+                if (j == 2 || j == 7) {
+                    j -= 1;
+                }
+                j += 2;
+                if (j >= 12) {
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    return res;
+};
+
 function resetOpenNote(i) {
     console.log("reset open note");
     $(`#ver-${i} #indicate .open-notes li`).each((index, li) => {
         // console.log(openNote[index]);
-        $(li).text(openNote[index % 6]).css({
-            color: "#fff",
-            "background-color": "#fa990f",
-        });
+        $(li)
+            .text(openNote[index % 6])
+            .css({
+                color: "#fff",
+                "background-color": "#fa990f",
+            });
     });
 }
 const updateChord = (i) => {
@@ -61,52 +126,47 @@ const showChord = (fret, i, capo) => {
     canClick = false;
     // $("li[dot-number]").animate({ opacity: 0 }, 500);
     // $("[note-number]").animate({ opacity: 0 }, 500);
-    console.log("update chord");
+    // console.log("update chord");
     var min = 24;
     fret.split("-").forEach((chord, index) => {
-        if(chord == "x") {
+        if (chord == "x") {
             $(`#ver-${i} #indicate ${notesClassName[index]}`)
-                    .text("")
-                    .prepend(
-                        '<img style="width: 20px; left: 0px; top:-2px; position: relative;" src="./img/x.png"/>'
-                    )
-                    .css({
-                        color: "#f00",
-                        "background-color": "rgb(254 244 229)",
-                    })
-                    .animate(500);
-        }
-        else if (chord == "0") {
+                .text("")
+                .prepend(
+                    '<img style="width: 20px; left: 0px; top:-2.05px; position: relative;" src="./img/x.png"/>'
+                )
+                .css({
+                    color: "#f00",
+                    "background-color": "rgb(254 244 229)",
+                })
+                .animate(500);
+        } else if (chord == "0") {
             // console.log(note);
             $(`#ver-${i} #indicate ${notesClassName[index]}`)
                 .text(openNote[index])
                 .css({
                     color: "#fff",
                     "background-color":
-                        note == openNote[index]
-                            ? "#007D1D"
-                            : "#fa990f",
+                        note == openNote[index] ? "#007D1D" : "#fa990f",
                 })
                 .animate(500);
-        }
-        else if (chord != "x") {
+        } else if (chord != "x") {
             var noteToShow = $(
                 `#notes-${i} ${notesClassName[index]} ul li[note-number="${chord}"]`
-            )
+            );
             noteToShow.animate({ opacity: 1 }, 500);
             min = Math.min(min, parseInt(chord));
-            if (
-                note == noteToShow.text()
-            ) {
+            if (note == noteToShow.text()) {
                 $(
                     `.notes ${notesClassName[index]} ul li[note-number="${chord}"]`
                 ).css({ "background-color": "#007D1D" });
             }
-            $(`#ver-${i} #indicate ${notesClassName[index]}`).css({
-                color: "rgb(134, 124, 108)",
-                "background-color": "rgb(254 244 229)",
-            })
-            .animate(500);
+            $(`#ver-${i} #indicate ${notesClassName[index]}`)
+                .css({
+                    color: "rgb(134, 124, 108)",
+                    "background-color": "rgb(254 244 229)",
+                })
+                .animate(500);
         }
     });
     barres[i] = min - 1;
