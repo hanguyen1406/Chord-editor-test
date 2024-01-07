@@ -295,17 +295,15 @@ function swDown(i) {
 }
 function deleteChord(i) {
     // console.log(noc);
-    if (sort && i < noc - 1) alert("Chỉ xóa được hợp âm cuối!");
-    else if (sort && i == noc - 1) {
-        var result = window.confirm(`Chắn chắn xóa version: ${i + 1}`);
-        if (result === true) {
-            $(`#ver-${i}`).remove();
-            noc--;
-        } else {
+    if (confirm(`Chắn chắn xóa version ${i + 1}`)) {
+        // $(`#ver-${i}`).remove();
+        if (i < noc - 1) {
+            for (let j = i; j < noc; j++) {
+                swDown(j);
+            }
         }
-    } else {
-        alert("Cần lưu lại thứ tự mới để xóa!");
-        $(".save").click();
+        $(`#ver-${noc - 1}`).remove();
+        noc--;
     }
 }
 function changeNewData() {
